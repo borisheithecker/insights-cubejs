@@ -81,5 +81,14 @@ cube(`Events`, {
       sql: `timestamp`,
       type: `time`
     }
+  },
+  segments: {
+    lehrer: {
+      sql: `role = 'teacher'`
+    },
+    schueler: {
+      sql: `role = 'student'`
+    },
+
   }
 });
