@@ -1,26 +1,32 @@
 cube(`Events`, {
-  sql: `SELECT * FROM events.events`,
+  sql: `SELECT * FROM activity`,
   
   joins: {
     Sessions: {
       relationship: `belongsTo`,
       sql: `
-        ${Events}.uid = ${Sessions}.uid
-        AND ${Events}.timestamp >= ${Sessions}.session_start_at
-        AND (${Events}.timestamp < ${Sessions}.next_session_start_at or ${Sessions}.next_session_start_at is null)
+        ${Events}.actor = ${Sessions}.actor
+        AND ${Events}.time >= ${Sessions}.session_start_at
+        AND (${Events}.time < ${Sessions}.next_session_start_at or ${Sessions}.next_session_start_at is null)
+      `
+    },
+    Actor: {
+      relationship: `hasOne`,
+      sql: `
+        ${Events}.actor = ${Actor}.insights_id
       `
     }
   },
   
   measures: {
 
-    // count: {
-    //   type: `count`,
+    count: {
+      type: `count`,
     //   drillMembers: [timestamp]
-    // },
+    },
 
     monthlyActiveUsers: {
-      sql: `uid`,
+      sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
         trailing: `30 day`,
@@ -29,7 +35,7 @@ cube(`Events`, {
     },
 
     weeklyActiveUsers: {
-      sql: `uid`,
+      sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
         trailing: `1 week`,
@@ -38,7 +44,7 @@ cube(`Events`, {
     },
 
     dailyActiveUsers: {
-      sql: `uid`,
+      sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
         trailing: `1 day`,
@@ -54,41 +60,46 @@ cube(`Events`, {
     },
 
     lastEventTimestamp: {
-      sql: `timestamp`,
+      sql: `time`,
       type: `max`,
       shown: false
-    }
+    } 
   },
   
   dimensions: {
-    url: {
+        
+    id: {
+      sql: `uid`,
+      type: `string`,
+      primaryKey: true
+    },
+  /*   url: {
       sql: `url`,
       type: `string`
     },
-    
-    uid: {
-      sql: `uid`,
-      type: `string`
-    },
+
 
     eventId: {
       sql: `event_id`,
       type: `number`,
-      primaryKey: true
+
+    }, */
+    schoolId: {
+      sql: `actor.school_id`,
+      type: `string`
     },
-    
-    timestamp: {
-      sql: `timestamp`,
+    timeStamp: {
+      sql: `time`,
       type: `time`
     }
   },
   segments: {
-    lehrer: {
+    /* lehrer: {
       sql: `role = 'teacher'`
     },
     schueler: {
       sql: `role = 'student'`
-    },
+    }, */
 
   }
 });

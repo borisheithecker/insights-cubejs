@@ -3,16 +3,16 @@ cube(`Sessions`, {
     sql:
       `
       SELECT
-        row_number() over(partition by event.uid order by event.timestamp) || ' - '|| event.uid as session_id
-        , event.uid
-        , event.timestamp as session_start_at
-        , row_number() over(partition by event.uid order by event.timestamp) as session_sequence
-        , lead(timestamp) over(partition by event.uid order by event.timestamp) as next_session_start_at
+        row_number() over(partition by event.actor order by event.time) || ' - '|| event.actor as session_id
+        , event.actor
+        , event.time as session_start_at
+        , row_number() over(partition by event.actor order by event.time) as session_sequence
+        , lead(time) over(partition by event.actor order by event.time) as next_session_start_at
       FROM
         (SELECT
-          e.uid
-          , e.timestamp
-          , EXTRACT(EPOCH FROM e.timestamp - LAG(e.timestamp) OVER(PARTITION BY e.uid ORDER BY e.timestamp)) AS inactivity_time
+          e.actor
+          , e.time
+          , EXTRACT(EPOCH FROM e.time - LAG(e.time) OVER(PARTITION BY e.actor ORDER BY e.time)) AS inactivity_time
          FROM ${Events.sql()} AS e
         ) as event
       WHERE (event.inactivity_time > 1800 OR event.inactivity_time is null)
