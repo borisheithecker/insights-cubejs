@@ -25,6 +25,11 @@ cube(`Events`, {
     //   drillMembers: [timestamp]
     },
 
+    activeUsers: {
+      sql: `actor`,
+      type: `countDistinct`
+    },
+
     monthlyActiveUsers: {
       sql: `actor`,
       type: `countDistinct`,
@@ -69,7 +74,7 @@ cube(`Events`, {
   dimensions: {
         
     id: {
-      sql: `uid`,
+      sql: `actor`,
       type: `string`,
       primaryKey: true
     },
@@ -77,7 +82,6 @@ cube(`Events`, {
       sql: `url`,
       type: `string`
     },
-
 
     eventId: {
       sql: `event_id`,
@@ -88,18 +92,15 @@ cube(`Events`, {
       sql: `actor.school_id`,
       type: `string`
     },
+
+    role: {
+      sql: `actor.roles`,
+      type: `string`
+    },
+
     timeStamp: {
       sql: `time`,
       type: `time`
     }
-  },
-  segments: {
-    /* lehrer: {
-      sql: `role = 'teacher'`
-    },
-    schueler: {
-      sql: `role = 'student'`
-    }, */
-
   }
 });
