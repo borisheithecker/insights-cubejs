@@ -34,8 +34,7 @@ cube(`Events`, {
       sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
-        trailing: `30 day`,
-        offset: `start`
+        trailing: `30 day`
       }
     },
 
@@ -43,8 +42,7 @@ cube(`Events`, {
       sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
-        trailing: `1 week`,
-        offset: `start`
+        trailing: `1 week`
       }
     },
 
@@ -52,8 +50,7 @@ cube(`Events`, {
       sql: `actor`,
       type: `countDistinct`,
       rollingWindow: {
-        trailing: `1 day`,
-        offset: `start`
+        trailing: `1 day`
       }
     },
 
@@ -68,7 +65,17 @@ cube(`Events`, {
       sql: `time`,
       type: `max`,
       shown: false
-    } 
+    } ,
+
+    pageCount: {
+      sql: `object`,
+      type: `count`
+    },
+
+    pageCountUnique: {
+      sql: `object`,
+      type: `countDistinct`
+    }
   },
   
   dimensions: {
@@ -101,6 +108,34 @@ cube(`Events`, {
     timeStamp: {
       sql: `time`,
       type: `time`
+    },
+
+    dayOfWeek: {
+      sql: `to_char(time, 'Day')`,
+      type: `string`
+    },
+
+    page: {
+      sql: `SUBSTRING(
+              SUBSTRING(
+                object,
+                POSITION('//' IN object)+2
+              ),
+              POSITION('/' IN SUBSTRING(object,POSITION('//' IN object)+2))
+            )`,
+      type: `string`
     }
-  }
+  },
+
+  segments: {
+    kurse: {
+     sql: `object LIKE '%/courses/%'`
+    },
+    datein: {
+      sql: `object LIKE '%/files/%'`
+    },
+    administration: {
+      sql: `object LIKE '%/administration/%'`
+    }
+ }
 });

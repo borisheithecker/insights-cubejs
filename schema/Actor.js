@@ -27,7 +27,7 @@ cube('Actor', {
     },
 
     segments: {
-      lehrer: {
+     lehrer: {
        sql: `roles LIKE '%teacher%'`
      },
      schueler: {
@@ -35,6 +35,9 @@ cube('Actor', {
      },
      admin: {
        sql: `roles LIKE '%administrator%'`
-     }
+     },
+     lehrerSchueler: {
+      sql: `roles LIKE '%student%' OR roles LIKE '%teacher%'`
+     },
    }
   });
