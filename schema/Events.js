@@ -1,5 +1,18 @@
 cube(`Events`, {
-  sql: `SELECT * FROM activity`,
+  sql: `
+        SELECT
+          *,
+          CAST(context ->> 'first-paint' AS INT) AS firstPaint,
+          CAST(context ->> 'time-to-interactive' AS INT) AS timeToInteractive,
+          CAST(context ->> 'page-loaded' AS INT) AS pageLoaded,
+          CAST(context ->> 'downlink' AS FLOAT) AS downlink,
+          CAST(context ->> 'response-start' AS INT) AS responseStart,
+          CAST(context ->> 'response-end' AS INT) AS responseEnd,
+          CAST(context ->> 'dom-interactive-time' AS INT) AS domInteractiveTime,
+          CAST(context ->> 'dom-content-loaded' AS INT) AS domContentLoaded
+        FROM 
+          activity
+       `,
   
   joins: {
     Sessions: {
@@ -75,6 +88,48 @@ cube(`Events`, {
     pageCountUnique: {
       sql: `object`,
       type: `countDistinct`
+    },
+
+    // Performance
+
+    AvgFirstPaint: {
+      sql: `firstPaint`,
+      type: `avg`
+    },
+
+    AvgTimeToInteractive: {
+      sql: `timeToInteractive`,
+      type: `avg`
+    },
+
+    AvgDownlink: {
+      sql: `downlink`,
+      type: `avg`
+    },
+    
+    AvgPageLoaded: { 
+      sql: `pageLoaded`,
+      type: `avg`
+    },
+
+    AvgResponseStart: {
+      sql: `responseStart`,
+      type: `avg`
+    },
+
+    AvgResponseEnd: {
+      sql: `responseEnd`,
+      type: `avg`
+    },
+
+    AvgDomContentLoaded: {
+      sql: `domContentLoaded`,
+      type: `avg`
+    },
+
+    AvgDomInteractiveTime: {
+      sql: `domInteractiveTime`,
+      type: `avg`
     }
   },
   
