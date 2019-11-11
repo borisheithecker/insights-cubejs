@@ -1,0 +1,9 @@
+node_modules/
+dashboard-app/
+.git/
+.dockerignore
+.gitattributes
+.gitignore
+.env
+Dockerfile
+README.md
