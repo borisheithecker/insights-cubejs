@@ -151,7 +151,7 @@ cube(`Events`, {
 
     }, */
     schoolId: {
-      sql: `actor.school_id`,
+      sql: `${Actor}.school_id`,
       type: `string`
     },
 
