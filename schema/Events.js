@@ -38,6 +38,11 @@ cube(`Events`, {
     //   drillMembers: [timestamp]
     },
 
+    schools: {
+      sql: `${Actor}.school_id`,
+      type: `countDistinct`,
+    },
+
     activeUsers: {
       sql: `actor`,
       type: `countDistinct`
@@ -170,6 +175,11 @@ cube(`Events`, {
       type: `string`
     },
 
+    dayOfMonth: {
+      sql: `to_char(time, 'DD')`,
+      type: `string`
+    },
+    
     page: {
       sql: `SUBSTRING(
               SUBSTRING(
