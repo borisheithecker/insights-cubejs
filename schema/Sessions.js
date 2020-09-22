@@ -18,10 +18,25 @@ cube(`Sessions`, {
       WHERE (event.inactivity_time > 1800 OR event.inactivity_time is null)
       `
     ,
+
+  joins: {
+    Actor: {
+      relationship: `hasOne`,
+      sql: `
+          ${Sessions}.actor = ${Actor}.insights_id
+        `
+    }
+  },
+
   measures: {
     count: {
       sql: `session_id`,
       type: `count`
+    },
+    
+    distinct: {
+      sql: `session_id`,
+      type: `countDistinct`
     },
 
     averageDurationMinutes: {
@@ -31,6 +46,11 @@ cube(`Sessions`, {
   },
 
   dimensions: {
+        schoolId: {
+          sql: `${Actor}.school_id`,
+          type: `string`
+        },
+
         startAt: {
         sql: `session_start_at`,
         type: `time`
