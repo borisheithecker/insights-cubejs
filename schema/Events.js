@@ -179,7 +179,7 @@ cube(`Events`, {
       sql: `to_char(time, 'DD')`,
       type: `string`
     },
-    
+
     page: {
       sql: `SUBSTRING(
               SUBSTRING(
@@ -194,13 +194,19 @@ cube(`Events`, {
 
   segments: {
     kurse: {
-     sql: `object LIKE '%/courses/%'`
+     sql: `object LIKE '%/courses/ID%'`
     },
     datein: {
       sql: `object LIKE '%/files/%'`
     },
     administration: {
       sql: `object LIKE '%/administration/%'`
+    },
+    assignment: {
+      sql: `object LIKE '%/homework/ID%'`
+    },
+    calendar: {
+      sql: `object LIKE '%/calendar%'`
     }
  }
 });
