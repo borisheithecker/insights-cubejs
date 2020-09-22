@@ -38,6 +38,11 @@ cube(`Events`, {
     //   drillMembers: [timestamp]
     },
 
+    schools: {
+      sql: `${Actor}.school_id`,
+      type: `countDistinct`,
+    },
+
     activeUsers: {
       sql: `actor`,
       type: `countDistinct`
@@ -151,7 +156,7 @@ cube(`Events`, {
 
     }, */
     schoolId: {
-      sql: `actor.school_id`,
+      sql: `${Actor}.school_id`,
       type: `string`
     },
 
@@ -170,6 +175,11 @@ cube(`Events`, {
       type: `string`
     },
 
+    dayOfMonth: {
+      sql: `to_char(time, 'DD')`,
+      type: `string`
+    },
+
     page: {
       sql: `SUBSTRING(
               SUBSTRING(
@@ -184,13 +194,19 @@ cube(`Events`, {
 
   segments: {
     kurse: {
-     sql: `object LIKE '%/courses/%'`
+     sql: `object LIKE '%/courses/ID%'`
     },
     datein: {
       sql: `object LIKE '%/files/%'`
     },
     administration: {
       sql: `object LIKE '%/administration/%'`
+    },
+    assignment: {
+      sql: `object LIKE '%/homework/ID%'`
+    },
+    calendar: {
+      sql: `object LIKE '%/calendar%'`
     }
  }
 });
