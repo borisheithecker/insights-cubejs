@@ -15,7 +15,7 @@ cube(`Sessions`, {
           , EXTRACT(EPOCH FROM e.time - LAG(e.time) OVER(PARTITION BY e.actor ORDER BY e.time)) AS inactivity_time
          FROM ${Events.sql()} AS e
         ) as event
-      WHERE (event.inactivity_time > 1800 OR event.inactivity_time is null)
+      WHERE (event.inactivity_time > 600 OR event.inactivity_time is null)
       `
     ,
 
