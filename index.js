@@ -29,7 +29,7 @@ const options = {
   },
 };
 
-  const server = new CubejsServer(options);
+const server = new CubejsServer(options);
 
 server.listen().then(({ port }) => { 
   console.log(`🚀 Cube.js server is listening on ${port}`);
